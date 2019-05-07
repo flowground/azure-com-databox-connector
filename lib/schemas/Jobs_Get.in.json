@@ -1,0 +1,28 @@
+{
+    "type": "object",
+    "properties": {
+        "subscriptionId": {
+            "required": true,
+            "type": "string"
+        },
+        "resourceGroupName": {
+            "required": true,
+            "type": "string"
+        },
+        "jobName": {
+            "required": true,
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24,
+            "pattern": "^[-\\w\\.]+$"
+        },
+        "api_version": {
+            "required": true,
+            "type": "string"
+        },
+        "_expand": {
+            "required": false,
+            "type": "string"
+        }
+    }
+}

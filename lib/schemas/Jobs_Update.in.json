@@ -1,0 +1,268 @@
+{
+    "type": "object",
+    "properties": {
+        "subscriptionId": {
+            "required": true,
+            "type": "string"
+        },
+        "resourceGroupName": {
+            "required": true,
+            "type": "string"
+        },
+        "jobName": {
+            "required": true,
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24,
+            "pattern": "^[-\\w\\.]+$"
+        },
+        "requestBody": {
+            "description": "The JobResourceUpdateParameter.",
+            "properties": {
+                "properties": {
+                    "description": "Properties of a job to be updated.",
+                    "x-ms-client-flatten": true,
+                    "properties": {
+                        "destinationAccountDetails": {
+                            "description": "Destination account details.",
+                            "items": {
+                                "description": "Details of the destination of the data",
+                                "discriminator": {
+                                    "propertyName": "dataDestinationType"
+                                },
+                                "properties": {
+                                    "accountId": {
+                                        "description": "Arm Id of the destination where the data has to be moved.",
+                                        "type": "string"
+                                    },
+                                    "dataDestinationType": {
+                                        "description": "Data Destination Type.",
+                                        "enum": [
+                                            "UnknownType",
+                                            "StorageAccount",
+                                            "ManagedDisk"
+                                        ],
+                                        "type": "string",
+                                        "x-ms-enum": {
+                                            "modelAsExtensible": true,
+                                            "name": "DataDestinationType",
+                                            "values": [
+                                                {
+                                                    "description": "Unknown type.",
+                                                    "value": "UnknownType"
+                                                },
+                                                {
+                                                    "description": "Storage Accounts .",
+                                                    "value": "StorageAccount"
+                                                },
+                                                {
+                                                    "description": "Azure Managed disk storage.",
+                                                    "value": "ManagedDisk"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "dataDestinationType"
+                                ],
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        "details": {
+                            "description": "Details of a job to be updated.",
+                            "properties": {
+                                "contactDetails": {
+                                    "description": "Contact details for notification and shipping.",
+                                    "properties": {
+                                        "contactName": {
+                                            "description": "Contact name of the person.",
+                                            "type": "string"
+                                        },
+                                        "emailList": {
+                                            "description": "List of Email-ids to be notified about job progress.",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "mobile": {
+                                            "description": "Mobile number of the contact person.",
+                                            "type": "string"
+                                        },
+                                        "notificationPreference": {
+                                            "description": "Notification preference for a job stage.",
+                                            "items": {
+                                                "description": "Notification preference for a job stage.",
+                                                "properties": {
+                                                    "sendNotification": {
+                                                        "description": "Notification is required or not.",
+                                                        "type": "boolean"
+                                                    },
+                                                    "stageName": {
+                                                        "description": "Name of the stage.",
+                                                        "enum": [
+                                                            "DevicePrepared",
+                                                            "Dispatched",
+                                                            "Delivered",
+                                                            "PickedUp",
+                                                            "AtAzureDC",
+                                                            "DataCopy"
+                                                        ],
+                                                        "type": "string",
+                                                        "x-ms-enum": {
+                                                            "modelAsExtensible": true,
+                                                            "name": "NotificationStageName",
+                                                            "values": [
+                                                                {
+                                                                    "description": "Notification at device prepared stage.",
+                                                                    "value": "DevicePrepared"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at device dispatched stage.",
+                                                                    "value": "Dispatched"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at device delivered stage.",
+                                                                    "value": "Delivered"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at device picked up from user stage.",
+                                                                    "value": "PickedUp"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at device received at azure datacenter stage.",
+                                                                    "value": "AtAzureDC"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at data copy started stage.",
+                                                                    "value": "DataCopy"
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "required": [
+                                                    "stageName",
+                                                    "sendNotification"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "phone": {
+                                            "description": "Phone number of the contact person.",
+                                            "type": "string"
+                                        },
+                                        "phoneExtension": {
+                                            "description": "Phone extension number of the contact person.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "contactName",
+                                        "phone",
+                                        "emailList"
+                                    ],
+                                    "type": "object"
+                                },
+                                "shippingAddress": {
+                                    "description": "Shipping address of the customer.",
+                                    "properties": {
+                                        "addressType": {
+                                            "description": "Type of address.",
+                                            "enum": [
+                                                "None",
+                                                "Residential",
+                                                "Commercial"
+                                            ],
+                                            "type": "string",
+                                            "x-ms-enum": {
+                                                "modelAsExtensible": true,
+                                                "name": "AddressType",
+                                                "values": [
+                                                    {
+                                                        "description": "Address type not known.",
+                                                        "value": "None"
+                                                    },
+                                                    {
+                                                        "description": "Residential Address.",
+                                                        "value": "Residential"
+                                                    },
+                                                    {
+                                                        "description": "Commercial Address.",
+                                                        "value": "Commercial"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "city": {
+                                            "description": "Name of the City.",
+                                            "type": "string"
+                                        },
+                                        "companyName": {
+                                            "description": "Name of the company.",
+                                            "type": "string"
+                                        },
+                                        "country": {
+                                            "description": "Name of the Country.",
+                                            "type": "string"
+                                        },
+                                        "postalCode": {
+                                            "description": "Postal code.",
+                                            "type": "string"
+                                        },
+                                        "stateOrProvince": {
+                                            "description": "Name of the State or Province.",
+                                            "type": "string"
+                                        },
+                                        "streetAddress1": {
+                                            "description": "Street Address line 1.",
+                                            "type": "string"
+                                        },
+                                        "streetAddress2": {
+                                            "description": "Street Address line 2.",
+                                            "type": "string"
+                                        },
+                                        "streetAddress3": {
+                                            "description": "Street Address line 3.",
+                                            "type": "string"
+                                        },
+                                        "zipExtendedCode": {
+                                            "description": "Extended Zip Code.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "streetAddress1",
+                                        "country",
+                                        "postalCode"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                },
+                "tags": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).",
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "api_version": {
+            "required": true,
+            "type": "string"
+        },
+        "If_Match": {
+            "type": "string"
+        }
+    }
+}

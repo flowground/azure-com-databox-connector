@@ -1,0 +1,253 @@
+{
+    "title": "DataBoxManagementClient",
+    "docsUrl": "",
+    "url": "https://api.apis.guru/v2/specs/azure.com/databox/2018-01-01/swagger.json",
+    "envVars": {
+        "OAUTH_CLIENT_ID": {
+            "description": "OAuth Client ID"
+        },
+        "OAUTH_CLIENT_SECRET": {
+            "description": "OAuth Client Secret"
+        }
+    },
+    "credentials": {
+        "fields": {
+            "server": {
+                "label": "Server",
+                "viewClass": "SelectView",
+                "model": [
+                    "https://management.azure.com/",
+                    "--- Custom URL"
+                ],
+                "required": true
+            },
+            "otherServer": {
+                "label": "Custom Server URL",
+                "viewClass": "TextFieldView"
+            },
+            "azure_auth": {
+                "label": "Azure Active Directory OAuth2 Flow",
+                "viewClass": "OAuthFieldView"
+            }
+        },
+        "oauth2": {
+            "client_id": "{{OAUTH_CLIENT_ID}}",
+            "client_secret": "{{OAUTH_CLIENT_SECRET}}",
+            "auth_uri": "https://login.microsoftonline.com/common/oauth2/authorize"
+        }
+    },
+    "triggers": {
+        "startFlow": {
+            "main": "./lib/triggers/startFlow.js",
+            "type": "polling",
+            "title": "Start Flow",
+            "fields": {}
+        }
+    },
+    "actions": {
+        "Operations_List": {
+            "main": "./lib/actions/Operations_List.js",
+            "title": "This method gets all the operations.",
+            "description": "This method gets all the operations.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Operations_List.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Jobs_List": {
+            "main": "./lib/actions/Jobs_List.js",
+            "title": "Lists all the jobs available under the subscription.",
+            "description": "Lists all the jobs available under the subscription.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Jobs_List.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Service_ListAvailableSkus": {
+            "main": "./lib/actions/Service_ListAvailableSkus.js",
+            "title": "This method provides the list of available skus for the given subscription and location.",
+            "description": "This method provides the list of available skus for the given subscription and location.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Service_ListAvailableSkus.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Service_ValidateAddress": {
+            "main": "./lib/actions/Service_ValidateAddress.js",
+            "title": "This method validates the customer shipping address and provide alternate addresses if any.",
+            "description": "This method validates the customer shipping address and provide alternate addresses if any.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Service_ValidateAddress.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Jobs_ListByResourceGroup": {
+            "main": "./lib/actions/Jobs_ListByResourceGroup.js",
+            "title": "Lists all the jobs available under the given resource group.",
+            "description": "Lists all the jobs available under the given resource group.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Jobs_ListByResourceGroup.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Jobs_Delete": {
+            "main": "./lib/actions/Jobs_Delete.js",
+            "title": "Deletes a job.",
+            "description": "Deletes a job.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Jobs_Delete.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Jobs_Get": {
+            "main": "./lib/actions/Jobs_Get.js",
+            "title": "Gets information about the specified job.",
+            "description": "Gets information about the specified job.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Jobs_Get.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Jobs_Update": {
+            "main": "./lib/actions/Jobs_Update.js",
+            "title": "Updates the properties of an existing job.",
+            "description": "Updates the properties of an existing job.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Jobs_Update.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Jobs_Create": {
+            "main": "./lib/actions/Jobs_Create.js",
+            "title": "Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead be updated with the Update job API.",
+            "description": "Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead be updated with the Update job API.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Jobs_Create.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Jobs_BookShipmentPickUp": {
+            "main": "./lib/actions/Jobs_BookShipmentPickUp.js",
+            "title": "Book shipment pick up.",
+            "description": "Book shipment pick up.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Jobs_BookShipmentPickUp.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Jobs_Cancel": {
+            "main": "./lib/actions/Jobs_Cancel.js",
+            "title": "CancelJob.",
+            "description": "CancelJob.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Jobs_Cancel.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "Jobs_ListCredentials": {
+            "main": "./lib/actions/Jobs_ListCredentials.js",
+            "title": "This method gets the unencrypted secrets related to the job.",
+            "description": "This method gets the unencrypted secrets related to the job.",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/Jobs_ListCredentials.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        }
+    }
+}

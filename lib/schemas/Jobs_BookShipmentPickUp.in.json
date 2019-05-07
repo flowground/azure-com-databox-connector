@@ -1,0 +1,49 @@
+{
+    "type": "object",
+    "properties": {
+        "subscriptionId": {
+            "required": true,
+            "type": "string"
+        },
+        "resourceGroupName": {
+            "required": true,
+            "type": "string"
+        },
+        "jobName": {
+            "required": true,
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24,
+            "pattern": "^[-\\w\\.]+$"
+        },
+        "requestBody": {
+            "description": "Shipment pick up request details.",
+            "properties": {
+                "endTime": {
+                    "description": "Maximum date before which the pick up should commence, this must be in local time of pick up area.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "shipmentLocation": {
+                    "description": "Shipment Location in the pickup place. Eg.front desk",
+                    "type": "string"
+                },
+                "startTime": {
+                    "description": "Minimum date after which the pick up should commence, this must be in local time of pick up area.",
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "startTime",
+                "endTime",
+                "shipmentLocation"
+            ],
+            "type": "object"
+        },
+        "api_version": {
+            "required": true,
+            "type": "string"
+        }
+    }
+}

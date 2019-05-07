@@ -1,0 +1,83 @@
+{
+    "type": "object",
+    "properties": {
+        "subscriptionId": {
+            "required": true,
+            "type": "string"
+        },
+        "location": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "description": "The filters for showing the available skus.",
+            "properties": {
+                "country": {
+                    "description": "ISO country code. Country for hardware shipment. For codes check: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements",
+                    "type": "string"
+                },
+                "location": {
+                    "description": "Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01",
+                    "type": "string"
+                },
+                "skuNames": {
+                    "description": "Sku Names to filter for available skus",
+                    "items": {
+                        "enum": [
+                            "DataBox",
+                            "DataBoxDisk",
+                            "DataBoxHeavy"
+                        ],
+                        "type": "string",
+                        "x-ms-enum": {
+                            "modelAsExtensible": true,
+                            "name": "SkuName",
+                            "values": [
+                                {
+                                    "description": "DataBox.",
+                                    "value": "DataBox"
+                                },
+                                {
+                                    "description": "DataBoxDisk.",
+                                    "value": "DataBoxDisk"
+                                },
+                                {
+                                    "description": "DataBoxHeavy.",
+                                    "value": "DataBoxHeavy"
+                                }
+                            ]
+                        }
+                    },
+                    "type": "array"
+                },
+                "transferType": {
+                    "description": "Type of the transfer.",
+                    "enum": [
+                        "ImportToAzure"
+                    ],
+                    "type": "string",
+                    "x-ms-enum": {
+                        "modelAsExtensible": true,
+                        "name": "TransferType",
+                        "values": [
+                            {
+                                "description": "Import data to azure.",
+                                "value": "ImportToAzure"
+                            }
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "transferType",
+                "country",
+                "location"
+            ],
+            "type": "object"
+        },
+        "api_version": {
+            "required": true,
+            "type": "string"
+        }
+    }
+}

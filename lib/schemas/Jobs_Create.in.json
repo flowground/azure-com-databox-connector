@@ -1,0 +1,835 @@
+{
+    "type": "object",
+    "properties": {
+        "subscriptionId": {
+            "required": true,
+            "type": "string"
+        },
+        "resourceGroupName": {
+            "required": true,
+            "type": "string"
+        },
+        "jobName": {
+            "required": true,
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 24,
+            "pattern": "^[-\\w\\.]+$"
+        },
+        "requestBody": {
+            "allOf": [
+                {
+                    "description": "Model of the Resource.",
+                    "properties": {
+                        "location": {
+                            "description": "The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East US, Southeast Asia, etc.). The region of a resource cannot be changed once it is created, but if an identical region is specified on update the request will succeed.",
+                            "type": "string",
+                            "x-ms-mutability": [
+                                "read",
+                                "create"
+                            ]
+                        },
+                        "sku": {
+                            "description": "The sku type.",
+                            "properties": {
+                                "displayName": {
+                                    "description": "The display name of the sku.",
+                                    "type": "string"
+                                },
+                                "family": {
+                                    "description": "The sku family.",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "description": "The sku name.",
+                                    "enum": [
+                                        "DataBox",
+                                        "DataBoxDisk",
+                                        "DataBoxHeavy"
+                                    ],
+                                    "type": "string",
+                                    "x-ms-enum": {
+                                        "modelAsExtensible": true,
+                                        "name": "SkuName",
+                                        "values": [
+                                            {
+                                                "description": "DataBox.",
+                                                "value": "DataBox"
+                                            },
+                                            {
+                                                "description": "DataBoxDisk.",
+                                                "value": "DataBoxDisk"
+                                            },
+                                            {
+                                                "description": "DataBoxHeavy.",
+                                                "value": "DataBoxHeavy"
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            "required": [
+                                "name"
+                            ],
+                            "type": "object"
+                        },
+                        "tags": {
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "description": "The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).",
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "location",
+                        "sku"
+                    ],
+                    "type": "object",
+                    "x-ms-azure-resource": true
+                }
+            ],
+            "description": "Job Resource.",
+            "properties": {
+                "id": {
+                    "description": "Id of the object.",
+                    "readOnly": true,
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the object.",
+                    "readOnly": true,
+                    "type": "string"
+                },
+                "properties": {
+                    "description": "Properties of a job.",
+                    "x-ms-client-flatten": true,
+                    "properties": {
+                        "cancellationReason": {
+                            "description": "Reason for cancellation.",
+                            "readOnly": true,
+                            "type": "string"
+                        },
+                        "details": {
+                            "description": "Details of a job run. This field will only be sent for expand details filter.",
+                            "discriminator": {
+                                "propertyName": "jobDetailsType"
+                            },
+                            "properties": {
+                                "chainOfCustodySasKey": {
+                                    "description": "Shared access key to download the chain of custody logs",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "contactDetails": {
+                                    "description": "Contact details for notification and shipping.",
+                                    "properties": {
+                                        "contactName": {
+                                            "description": "Contact name of the person.",
+                                            "type": "string"
+                                        },
+                                        "emailList": {
+                                            "description": "List of Email-ids to be notified about job progress.",
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "mobile": {
+                                            "description": "Mobile number of the contact person.",
+                                            "type": "string"
+                                        },
+                                        "notificationPreference": {
+                                            "description": "Notification preference for a job stage.",
+                                            "items": {
+                                                "description": "Notification preference for a job stage.",
+                                                "properties": {
+                                                    "sendNotification": {
+                                                        "description": "Notification is required or not.",
+                                                        "type": "boolean"
+                                                    },
+                                                    "stageName": {
+                                                        "description": "Name of the stage.",
+                                                        "enum": [
+                                                            "DevicePrepared",
+                                                            "Dispatched",
+                                                            "Delivered",
+                                                            "PickedUp",
+                                                            "AtAzureDC",
+                                                            "DataCopy"
+                                                        ],
+                                                        "type": "string",
+                                                        "x-ms-enum": {
+                                                            "modelAsExtensible": true,
+                                                            "name": "NotificationStageName",
+                                                            "values": [
+                                                                {
+                                                                    "description": "Notification at device prepared stage.",
+                                                                    "value": "DevicePrepared"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at device dispatched stage.",
+                                                                    "value": "Dispatched"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at device delivered stage.",
+                                                                    "value": "Delivered"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at device picked up from user stage.",
+                                                                    "value": "PickedUp"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at device received at azure datacenter stage.",
+                                                                    "value": "AtAzureDC"
+                                                                },
+                                                                {
+                                                                    "description": "Notification at data copy started stage.",
+                                                                    "value": "DataCopy"
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "required": [
+                                                    "stageName",
+                                                    "sendNotification"
+                                                ],
+                                                "type": "object"
+                                            },
+                                            "type": "array"
+                                        },
+                                        "phone": {
+                                            "description": "Phone number of the contact person.",
+                                            "type": "string"
+                                        },
+                                        "phoneExtension": {
+                                            "description": "Phone extension number of the contact person.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "contactName",
+                                        "phone",
+                                        "emailList"
+                                    ],
+                                    "type": "object"
+                                },
+                                "copyLogDetails": {
+                                    "description": "List of copy log details.",
+                                    "items": {
+                                        "description": "Details for log generated during copy.",
+                                        "discriminator": {
+                                            "propertyName": "copyLogDetailsType"
+                                        },
+                                        "properties": {
+                                            "copyLogDetailsType": {
+                                                "description": "Indicates the type of job details.",
+                                                "enum": [
+                                                    "DataBox",
+                                                    "DataBoxDisk",
+                                                    "DataBoxHeavy"
+                                                ],
+                                                "readOnly": true,
+                                                "type": "string",
+                                                "x-ms-enum": {
+                                                    "modelAsExtensible": false,
+                                                    "name": "ClassDiscriminator",
+                                                    "values": [
+                                                        {
+                                                            "description": "DataBox orders.",
+                                                            "value": "DataBox"
+                                                        },
+                                                        {
+                                                            "description": "DataBoxDisk orders.",
+                                                            "value": "DataBoxDisk"
+                                                        },
+                                                        {
+                                                            "description": "DataBoxHeavy orders.",
+                                                            "value": "DataBoxHeavy"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "readOnly": true,
+                                    "type": "array"
+                                },
+                                "deliveryPackage": {
+                                    "description": "Delivery package shipping details.",
+                                    "readOnly": true,
+                                    "properties": {
+                                        "carrierName": {
+                                            "description": "Name of the carrier.",
+                                            "readOnly": true,
+                                            "type": "string"
+                                        },
+                                        "trackingId": {
+                                            "description": "Tracking Id of shipment.",
+                                            "readOnly": true,
+                                            "type": "string"
+                                        },
+                                        "trackingUrl": {
+                                            "description": "Url where shipment can be tracked.",
+                                            "readOnly": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "destinationAccountDetails": {
+                                    "description": "Destination account details.",
+                                    "items": {
+                                        "description": "Details of the destination of the data",
+                                        "discriminator": {
+                                            "propertyName": "dataDestinationType"
+                                        },
+                                        "properties": {
+                                            "accountId": {
+                                                "description": "Arm Id of the destination where the data has to be moved.",
+                                                "type": "string"
+                                            },
+                                            "dataDestinationType": {
+                                                "description": "Data Destination Type.",
+                                                "enum": [
+                                                    "UnknownType",
+                                                    "StorageAccount",
+                                                    "ManagedDisk"
+                                                ],
+                                                "type": "string",
+                                                "x-ms-enum": {
+                                                    "modelAsExtensible": true,
+                                                    "name": "DataDestinationType",
+                                                    "values": [
+                                                        {
+                                                            "description": "Unknown type.",
+                                                            "value": "UnknownType"
+                                                        },
+                                                        {
+                                                            "description": "Storage Accounts .",
+                                                            "value": "StorageAccount"
+                                                        },
+                                                        {
+                                                            "description": "Azure Managed disk storage.",
+                                                            "value": "ManagedDisk"
+                                                        }
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        "required": [
+                                            "dataDestinationType"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                },
+                                "errorDetails": {
+                                    "description": "Error details for failure. This is optional.",
+                                    "items": {
+                                        "description": "Job Error Details for providing the information and recommended action.",
+                                        "properties": {
+                                            "errorCode": {
+                                                "description": "Code for the error.",
+                                                "format": "int32",
+                                                "readOnly": true,
+                                                "type": "integer"
+                                            },
+                                            "errorMessage": {
+                                                "description": "Message for the error.",
+                                                "readOnly": true,
+                                                "type": "string"
+                                            },
+                                            "exceptionMessage": {
+                                                "description": "Contains the non localized exception message",
+                                                "readOnly": true,
+                                                "type": "string"
+                                            },
+                                            "recommendedAction": {
+                                                "description": "Recommended action for the error.",
+                                                "readOnly": true,
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "readOnly": true,
+                                    "type": "array"
+                                },
+                                "expectedDataSizeInTeraBytes": {
+                                    "description": "The expected size of the data, which needs to be transferred in this job, in terabytes.",
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "jobDetailsType": {
+                                    "description": "Indicates the type of job details.",
+                                    "enum": [
+                                        "DataBox",
+                                        "DataBoxDisk",
+                                        "DataBoxHeavy"
+                                    ],
+                                    "type": "string",
+                                    "x-ms-enum": {
+                                        "modelAsExtensible": false,
+                                        "name": "ClassDiscriminator",
+                                        "values": [
+                                            {
+                                                "description": "DataBox orders.",
+                                                "value": "DataBox"
+                                            },
+                                            {
+                                                "description": "DataBoxDisk orders.",
+                                                "value": "DataBoxDisk"
+                                            },
+                                            {
+                                                "description": "DataBoxHeavy orders.",
+                                                "value": "DataBoxHeavy"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "jobStages": {
+                                    "description": "List of stages that run in the job.",
+                                    "items": {
+                                        "description": "Job stages.",
+                                        "properties": {
+                                            "displayName": {
+                                                "description": "Display name of the job stage.",
+                                                "readOnly": true,
+                                                "type": "string"
+                                            },
+                                            "errorDetails": {
+                                                "description": "Error details for the stage.",
+                                                "items": {
+                                                    "description": "Job Error Details for providing the information and recommended action.",
+                                                    "properties": {
+                                                        "errorCode": {
+                                                            "description": "Code for the error.",
+                                                            "format": "int32",
+                                                            "readOnly": true,
+                                                            "type": "integer"
+                                                        },
+                                                        "errorMessage": {
+                                                            "description": "Message for the error.",
+                                                            "readOnly": true,
+                                                            "type": "string"
+                                                        },
+                                                        "exceptionMessage": {
+                                                            "description": "Contains the non localized exception message",
+                                                            "readOnly": true,
+                                                            "type": "string"
+                                                        },
+                                                        "recommendedAction": {
+                                                            "description": "Recommended action for the error.",
+                                                            "readOnly": true,
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "readOnly": true,
+                                                "type": "array"
+                                            },
+                                            "jobStageDetails": {
+                                                "description": "Job Stage Details",
+                                                "readOnly": true,
+                                                "type": "object"
+                                            },
+                                            "stageName": {
+                                                "description": "Name of the job stage.",
+                                                "enum": [
+                                                    "DeviceOrdered",
+                                                    "DevicePrepared",
+                                                    "Dispatched",
+                                                    "Delivered",
+                                                    "PickedUp",
+                                                    "AtAzureDC",
+                                                    "DataCopy",
+                                                    "Completed",
+                                                    "CompletedWithErrors",
+                                                    "Cancelled",
+                                                    "Failed_IssueReportedAtCustomer",
+                                                    "Failed_IssueDetectedAtAzureDC",
+                                                    "Aborted"
+                                                ],
+                                                "readOnly": true,
+                                                "type": "string",
+                                                "x-ms-enum": {
+                                                    "modelAsExtensible": true,
+                                                    "name": "StageName",
+                                                    "values": [
+                                                        {
+                                                            "description": "An order has been created.",
+                                                            "value": "DeviceOrdered"
+                                                        },
+                                                        {
+                                                            "description": "A device has been prepared for the order.",
+                                                            "value": "DevicePrepared"
+                                                        },
+                                                        {
+                                                            "description": "Device has been dispatched to the user of the order.",
+                                                            "value": "Dispatched"
+                                                        },
+                                                        {
+                                                            "description": "Device has been delivered to the user of the order.",
+                                                            "value": "Delivered"
+                                                        },
+                                                        {
+                                                            "description": "Device has been picked up from user and in transit to azure datacenter.",
+                                                            "value": "PickedUp"
+                                                        },
+                                                        {
+                                                            "description": "Device has been received at azure datacenter from the user.",
+                                                            "value": "AtAzureDC"
+                                                        },
+                                                        {
+                                                            "description": "Data copy from the device at azure datacenter.",
+                                                            "value": "DataCopy"
+                                                        },
+                                                        {
+                                                            "description": "Order has completed.",
+                                                            "value": "Completed"
+                                                        },
+                                                        {
+                                                            "description": "Order has completed with errors.",
+                                                            "value": "CompletedWithErrors"
+                                                        },
+                                                        {
+                                                            "description": "Order has been cancelled.",
+                                                            "value": "Cancelled"
+                                                        },
+                                                        {
+                                                            "description": "Order has failed due to issue reported by user.",
+                                                            "value": "Failed_IssueReportedAtCustomer"
+                                                        },
+                                                        {
+                                                            "description": "Order has failed due to issue detected at azure datacenter.",
+                                                            "value": "Failed_IssueDetectedAtAzureDC"
+                                                        },
+                                                        {
+                                                            "description": "Order has been aborted.",
+                                                            "value": "Aborted"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "stageStatus": {
+                                                "description": "Status of the job stage.",
+                                                "enum": [
+                                                    "None",
+                                                    "InProgress",
+                                                    "Succeeded",
+                                                    "Failed",
+                                                    "Cancelled",
+                                                    "Cancelling",
+                                                    "SucceededWithErrors"
+                                                ],
+                                                "readOnly": true,
+                                                "type": "string",
+                                                "x-ms-enum": {
+                                                    "modelAsExtensible": true,
+                                                    "name": "StageStatus",
+                                                    "values": [
+                                                        {
+                                                            "description": "No status available yet.",
+                                                            "value": "None"
+                                                        },
+                                                        {
+                                                            "description": "Stage is in progress.",
+                                                            "value": "InProgress"
+                                                        },
+                                                        {
+                                                            "description": "Stage has succeeded.",
+                                                            "value": "Succeeded"
+                                                        },
+                                                        {
+                                                            "description": "Stage has failed.",
+                                                            "value": "Failed"
+                                                        },
+                                                        {
+                                                            "description": "Stage has been cancelled.",
+                                                            "value": "Cancelled"
+                                                        },
+                                                        {
+                                                            "description": "Stage is cancelling.",
+                                                            "value": "Cancelling"
+                                                        },
+                                                        {
+                                                            "description": "Stage has succeeded with errors.",
+                                                            "value": "SucceededWithErrors"
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            "stageTime": {
+                                                "description": "Time for the job stage in UTC ISO 8601 format.",
+                                                "format": "date-time",
+                                                "readOnly": true,
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "readOnly": true,
+                                    "type": "array"
+                                },
+                                "preferences": {
+                                    "description": "Preferences for the order.",
+                                    "properties": {
+                                        "preferredDataCenterRegion": {
+                                            "items": {
+                                                "type": "string"
+                                            },
+                                            "type": "array"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "returnPackage": {
+                                    "description": "Return package shipping details.",
+                                    "readOnly": true,
+                                    "properties": {
+                                        "carrierName": {
+                                            "description": "Name of the carrier.",
+                                            "readOnly": true,
+                                            "type": "string"
+                                        },
+                                        "trackingId": {
+                                            "description": "Tracking Id of shipment.",
+                                            "readOnly": true,
+                                            "type": "string"
+                                        },
+                                        "trackingUrl": {
+                                            "description": "Url where shipment can be tracked.",
+                                            "readOnly": true,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "reverseShipmentLabelSasKey": {
+                                    "description": "Shared access key to download the return shipment label",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "shippingAddress": {
+                                    "description": "Shipping address of the customer.",
+                                    "properties": {
+                                        "addressType": {
+                                            "description": "Type of address.",
+                                            "enum": [
+                                                "None",
+                                                "Residential",
+                                                "Commercial"
+                                            ],
+                                            "type": "string",
+                                            "x-ms-enum": {
+                                                "modelAsExtensible": true,
+                                                "name": "AddressType",
+                                                "values": [
+                                                    {
+                                                        "description": "Address type not known.",
+                                                        "value": "None"
+                                                    },
+                                                    {
+                                                        "description": "Residential Address.",
+                                                        "value": "Residential"
+                                                    },
+                                                    {
+                                                        "description": "Commercial Address.",
+                                                        "value": "Commercial"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "city": {
+                                            "description": "Name of the City.",
+                                            "type": "string"
+                                        },
+                                        "companyName": {
+                                            "description": "Name of the company.",
+                                            "type": "string"
+                                        },
+                                        "country": {
+                                            "description": "Name of the Country.",
+                                            "type": "string"
+                                        },
+                                        "postalCode": {
+                                            "description": "Postal code.",
+                                            "type": "string"
+                                        },
+                                        "stateOrProvince": {
+                                            "description": "Name of the State or Province.",
+                                            "type": "string"
+                                        },
+                                        "streetAddress1": {
+                                            "description": "Street Address line 1.",
+                                            "type": "string"
+                                        },
+                                        "streetAddress2": {
+                                            "description": "Street Address line 2.",
+                                            "type": "string"
+                                        },
+                                        "streetAddress3": {
+                                            "description": "Street Address line 3.",
+                                            "type": "string"
+                                        },
+                                        "zipExtendedCode": {
+                                            "description": "Extended Zip Code.",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "streetAddress1",
+                                        "country",
+                                        "postalCode"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "contactDetails",
+                                "shippingAddress",
+                                "destinationAccountDetails",
+                                "jobDetailsType"
+                            ],
+                            "type": "object"
+                        },
+                        "error": {
+                            "description": "Top level error for the job.",
+                            "readOnly": true,
+                            "properties": {
+                                "code": {
+                                    "description": "Error code that can be used to programmatically identify the error.",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "description": "Describes the error in detail and provides debugging information.",
+                                    "readOnly": true,
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "isCancellable": {
+                            "description": "Describes whether the job is cancellable or not.",
+                            "readOnly": true,
+                            "type": "boolean"
+                        },
+                        "isDeletable": {
+                            "description": "Describes whether the job is deletable or not.",
+                            "readOnly": true,
+                            "type": "boolean"
+                        },
+                        "isShippingAddressEditable": {
+                            "description": "Describes whether the shipping address is editable or not.",
+                            "readOnly": true,
+                            "type": "boolean"
+                        },
+                        "startTime": {
+                            "description": "Time at which the job was started in UTC ISO 8601 format.",
+                            "format": "date-time",
+                            "readOnly": true,
+                            "type": "string"
+                        },
+                        "status": {
+                            "description": "Name of the stage which is in progress.",
+                            "enum": [
+                                "DeviceOrdered",
+                                "DevicePrepared",
+                                "Dispatched",
+                                "Delivered",
+                                "PickedUp",
+                                "AtAzureDC",
+                                "DataCopy",
+                                "Completed",
+                                "CompletedWithErrors",
+                                "Cancelled",
+                                "Failed_IssueReportedAtCustomer",
+                                "Failed_IssueDetectedAtAzureDC",
+                                "Aborted"
+                            ],
+                            "readOnly": true,
+                            "type": "string",
+                            "x-ms-enum": {
+                                "modelAsExtensible": true,
+                                "name": "StageName",
+                                "values": [
+                                    {
+                                        "description": "An order has been created.",
+                                        "value": "DeviceOrdered"
+                                    },
+                                    {
+                                        "description": "A device has been prepared for the order.",
+                                        "value": "DevicePrepared"
+                                    },
+                                    {
+                                        "description": "Device has been dispatched to the user of the order.",
+                                        "value": "Dispatched"
+                                    },
+                                    {
+                                        "description": "Device has been delivered to the user of the order.",
+                                        "value": "Delivered"
+                                    },
+                                    {
+                                        "description": "Device has been picked up from user and in transit to azure datacenter.",
+                                        "value": "PickedUp"
+                                    },
+                                    {
+                                        "description": "Device has been received at azure datacenter from the user.",
+                                        "value": "AtAzureDC"
+                                    },
+                                    {
+                                        "description": "Data copy from the device at azure datacenter.",
+                                        "value": "DataCopy"
+                                    },
+                                    {
+                                        "description": "Order has completed.",
+                                        "value": "Completed"
+                                    },
+                                    {
+                                        "description": "Order has completed with errors.",
+                                        "value": "CompletedWithErrors"
+                                    },
+                                    {
+                                        "description": "Order has been cancelled.",
+                                        "value": "Cancelled"
+                                    },
+                                    {
+                                        "description": "Order has failed due to issue reported by user.",
+                                        "value": "Failed_IssueReportedAtCustomer"
+                                    },
+                                    {
+                                        "description": "Order has failed due to issue detected at azure datacenter.",
+                                        "value": "Failed_IssueDetectedAtAzureDC"
+                                    },
+                                    {
+                                        "description": "Order has been aborted.",
+                                        "value": "Aborted"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "type": "object"
+                },
+                "type": {
+                    "description": "Type of the object.",
+                    "readOnly": true,
+                    "type": "string"
+                }
+            },
+            "required": [
+                "properties"
+            ],
+            "type": "object"
+        },
+        "api_version": {
+            "required": true,
+            "type": "string"
+        }
+    }
+}
